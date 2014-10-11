@@ -1,0 +1,80 @@
+OpenXC Android Library
+=========================
+
+This library is a part of the [OpenXC][] project.
+
+This Android library contains the tools required to read vehicle data from the
+vehicle's CAN bus through the OpenXC vehicle interface in any Android
+application.
+
+Visit the [OpenXC][] project page for
+[installation
+instructions](http://openxcplatform.com/getting-started/library-installation.html),
+[usage details](http://openxcplatform.com/android/api-guide.html) and the
+[source code documentation](http://android.openxcplatform.com).
+
+## Building from Eclipse
+
+After cloning the `openxc-android` repository to your local disk, open Eclipse
+and go to `File -> New -> Other -> Android -> Android Project from Existing
+Source`. Browse to the `openxc-android` folder and it should detect the 4
+Android projects within the repository. At the minimum, add the `openxc` project
+(the Android library itself) and `OpenXcEnablerActivity` (the Enabler app,
+required to run OpenXC applications).
+
+## Building from Command Line
+
+The build requires [Maven](http://maven.apache.org/download.html)
+v3.0.3+ and the [Android SDK](http://developer.android.com/sdk/index.html)
+to be installed in your development environment. In addition you'll need to set
+the `ANDROID_HOME` environment variable to the location of your SDK:
+
+    export ANDROID_HOME=/opt/tools/android-sdk
+
+You also need the Android support library, but unfortunately Google doesn't
+deploy the latest versions of this to the the Central Maven repository. Instead,
+you must open the Android SDK manager and install the "Android Support
+Repository" package (under "Extras"). Next, open a terminal and navigate to your
+SDK's top-level directory (e.g. `/home/user/android-sdk`.
+
+You must manually copy the Maven artifacts from this folder to your local
+repository:
+
+    $ cp -R $ANDROID_HOME/extras/android/m2repository/com ~/.m2/repository
+
+After satisfying those requirements, the build is pretty simple:
+
+To compile the OpenXC library as an APKLIB and install it to your local
+Maven repository:
+
+    $ mvn install -pl openxc -am
+
+To compile and build and APK for the Enabler app (that uses the OpenXC
+library):
+
+    $ mvn package -pl enabler
+
+Finally, to deploy the packaged APK to an attached Android device and run it:
+
+    $ mvn android:deploy android:run -pl enabler
+
+* Run `mvn clean install -pl openxc,openxc-it -am` from the root directory to build and run
+  the library and test suite. This requires that an Android device is attached or an
+  emulator is running.
+
+If you want the tests to wait for a debugger to attach, change the `testDebug`
+setting in `openxc-android/pom.xml` to `true`.
+
+## Contributing
+
+Please see our [Contribution Documents](https://github.com/openxc/openxc-android/blob/master/CONTRIBUTING.mkd).
+
+## License
+
+Copyright (c) 2011-2013 Ford Motor Company
+Licensed under the BSD license.
+
+[binding]: http://developer.android.com/guide/topics/fundamentals/bound-services.html#Binding)
+[services]: http://developer.android.com/guide/topics/fundamentals/services.html
+[AIDL]: http://developer.android.com/guide/developing/tools/aidl.html
+[OpenXC]: http://openxcplatform.com
